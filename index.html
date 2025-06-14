@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Client LRQM</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="toast-container position-fixed top-0 end-0 p-3">
+    <div id="notificationToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="toast-body d-flex align-items-center">
+        <span class="toast-icon me-2"></span>
+        <span class="toast-message"></span>
+      </div>
+    </div>
+  </div>
+
+  <nav class="navbar sticky-top bg-white shadow-sm">
+    <div class="container-fluid">
+      <span class="navbar-brand">La RQM - Gestion des utilisateurs</span>
+      <div class="d-flex align-items-center gap-2">
+        <select id="eventSelect" class="form-select"></select>
+        <button id="toggleEventDetails" class="btn btn-outline-primary">
+          Plus d'infos
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <div id="eventDetails" class="container-fluid py-2 bg-light border-bottom collapsed">
+    <div class="table-responsive">
+      <table id="eventDetailsTable" class="table table-hover border bg-white shadow-sm rounded overflow-hidden">
+        <thead class="table-light">
+          <tr>
+            <th class="fw-medium text-secondary" style="width: 30%;">Propriété</th>
+            <th>Valeur</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="text-secondary">ID</td>
+            <td id="eventId" class="fw-medium">-</td>
+          </tr>
+          <tr>
+            <td class="text-secondary">Nom</td>
+            <td id="eventName" class="fw-medium">-</td>
+          </tr>
+          <tr>
+            <td class="text-secondary">Date de début</td>
+            <td id="eventStartDate" class="fw-medium">-</td>
+          </tr>
+          <tr>
+            <td class="text-secondary">Date de fin</td>
+            <td id="eventEndDate" class="fw-medium">-</td>
+          </tr>
+          <tr>
+            <td class="text-secondary">Objectif en mètres</td>
+            <td id="eventMetersGoal" class="fw-medium">-</td>
+          </tr>
+          <tr>
+            <td class="text-secondary">Coordonnées du site</td>
+            <td id="eventCoordinates" class="fw-medium">-</td>
+          </tr>
+          <tr>
+            <td class="text-secondary">Point de rencontre</td>
+            <td id="eventMeetingPoint" class="fw-medium">-</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="container-fluid py-3">
+    <div class="row g-3">
+      <!-- Measure Card -->
+      <div class="col-12 col-lg-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Nouvelle mesure</h5>
+            <div class="mb-1">
+              <label class="form-label">Numéro de dossard</label>
+              <input type="number" id="measureBibInput" class="form-control" placeholder="1-9999" min="1" max="9999">
+            </div>
+            <div class="mb-1">
+              <label class="form-label">Contributeurs</label>
+              <input type="number" id="contributorsInput" class="form-control" placeholder="1-4" min="1" max="4" value="1">
+            </div>
+            <div class="mb-1">
+              <label class="form-label">Distance (mètres)</label>
+              <input type="number" id="measureMetersInput" class="form-control" placeholder="1000" min="1">
+            </div>
+            <button id="addMetersBtn" class="btn btn-primary w-100">Ajouter la mesure</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Search Card -->
+      <div class="col-12 col-lg-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Rechercher un utilisateur</h5>
+            <div class="mb-1">
+              <label class="form-label">Numéro de dossard</label>
+              <input type="number" id="bibInput" class="form-control mb-2" placeholder="1-9999">
+              <button id="searchByBibBtn" class="btn btn-primary w-100">Rechercher par dossard</button>
+            </div>
+            <div class="mb-1">
+              <label class="form-label">Pseudo</label>
+              <input type="text" id="usernameSearchInput" class="form-control mb-2" placeholder="Victor">
+              <button id="searchByUsernameBtn" class="btn btn-primary w-100">Rechercher par pseudo</button>
+            </div>
+
+            <table id="userDetailsTable" class="table table-hover border bg-white shadow-sm rounded overflow-hidden mt-3">
+              <thead class="table-light">
+                <tr>
+                  <th class="fw-medium text-secondary" style="width: 30%;">Propriété</th>
+                  <th>Valeur</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="text-secondary">ID</td>
+                  <td id="userId" class="fw-medium">-</td>
+                </tr>
+                <tr>
+                  <td class="text-secondary">Nom</td>
+                  <td id="userName" class="fw-medium">-</td>
+                </tr>
+                <tr>
+                  <td class="text-secondary">Numéro de dossard</td>
+                  <td id="userBibId" class="fw-medium">-</td>
+                </tr>
+                <tr>
+                  <td class="text-secondary">Event ID</td>
+                  <td id="userEventId" class="fw-medium">-</td>
+                </tr>
+                <tr>
+                  <td class="text-secondary">Contribution totale</td>
+                  <td id="userMeters" class="fw-medium">-</td>
+                </tr>
+                <tr>
+                  <td class="text-secondary">Temps total passé</td>
+                  <td id="userTime" class="fw-medium">-</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+
+      <!-- Add User Card -->
+      <div class="col-12 col-lg-4">
+        <div class="card h-100">
+          <div class="card-body">
+            <h5 class="card-title mb-3">Ajouter un utilisateur</h5>
+            <form id="addUserSection">
+              <div class="mb-3">
+                <label class="form-label">Pseudo</label>
+                <input type="text" id="usernameInput" class="form-control" placeholder="Victor">
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Numéro de dossard</label>
+                <div class="d-flex gap-2">
+                  <input type="number" id="bibIdInput" class="form-control" placeholder="1-9999">
+                  <button type="button" id="autoFillBibIdBtn" class="btn btn-outline-secondary">Auto</button>
+                </div>
+              </div>
+              <button type="submit" id="addUserBtn" class="btn btn-primary w-100">Ajouter l'utilisateur</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script type="module" src="/src/main.js"></script>
+</body>
+</html>
