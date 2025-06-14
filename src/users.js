@@ -1,5 +1,5 @@
 import { showNotification } from './notifications.js';
-import { API_BASE_URL } from './config.js';
+import { API_BASE_URL } from '../config.js';
 
 function formatTime(seconds) {
   const hours = Math.floor(seconds / 3600);

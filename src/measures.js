@@ -1,5 +1,5 @@
 import { showNotification } from './notifications.js';
-import { API_BASE_URL } from './config.js';
+import { API_BASE_URL } from '../config.js';
 
 export function setupMeasureSection() {
   const measureBibInput = document.getElementById('measureBibInput');

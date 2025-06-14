@@ -1,4 +1,4 @@
-import { API_BASE_URL } from './config.js';
+import { API_BASE_URL } from '../config.js';
 
 export const eventSelect = document.getElementById('eventSelect');
 export const result = document.getElementById('result');
