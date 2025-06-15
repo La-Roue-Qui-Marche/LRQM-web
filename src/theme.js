@@ -2,7 +2,6 @@ export function setupThemeToggle() {
   const html = document.documentElement;
   const themeToggle = document.getElementById('themeToggle');
   
-  // Set initial theme (light by default)
   const currentTheme = localStorage.getItem('theme') || 'light';
   html.setAttribute('data-bs-theme', currentTheme);
   updateThemeButton(currentTheme);

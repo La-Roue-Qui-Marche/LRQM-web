@@ -36,7 +36,6 @@ export function setupUserSearchSection() {
     userBibIdCell.textContent = user.bib_id;
     userEventIdCell.textContent = user.event_id;
 
-    // Fetch additional user details
     Promise.all([
       fetch(`/api/users/${user.id}/meters`).then(r => r.json()),
       fetch(`/api/users/${user.id}/time`).then(r => r.json())
@@ -86,7 +85,6 @@ export function setupUserSearchSection() {
           return;
         }
 
-        // Fill table with user data and show success
         fillUserDetails(user);
         showNotification('Utilisateur trouvé', 'success');
       })
@@ -105,7 +103,6 @@ export function setupAddUserSection() {
   const autoFillBibIdBtn = document.getElementById('autoFillBibIdBtn');
   const addUserBtn = document.getElementById('addUserBtn');
 
-  // Auto-fill functionality
   async function fetchNextBibId() {
     const selectedEventId = localStorage.getItem('selectedEventId');
     if (!selectedEventId) {
@@ -118,10 +115,8 @@ export function setupAddUserSection() {
       const users = await response.json();
       const filteredUsers = users.filter(user => user.event_id === parseInt(selectedEventId, 10));
       
-      // Sort bib_ids numerically
       const usedBibIds = filteredUsers.map(user => parseInt(user.bib_id, 10)).sort((a, b) => a - b);
       
-      // Find first available number
       let nextBibId = 1;
       for (const currentBibId of usedBibIds) {
         if (currentBibId !== nextBibId) {
@@ -136,12 +131,10 @@ export function setupAddUserSection() {
     }
   }
 
-  // Keep the auto-fill button functionality
   autoFillBibIdBtn.addEventListener('click', () => {
     fetchNextBibId();
   });
 
-  // Add user functionality
   addUserBtn.addEventListener('click', (e) => {
     e.preventDefault();
     const username = usernameInput.value.trim();
@@ -155,7 +148,7 @@ export function setupAddUserSection() {
 
     const payload = { 
       username, 
-      bib_id: bibId.toString(), // Ensure bib_id is a string
+      bib_id: bibId.toString(),
       event_id: eventId 
     };
     console.log('Sending user creation request with payload:', payload);

@@ -27,7 +27,7 @@ export function fetchAndDisplayEvents() {
 
         if (e.name === 'La Roue Qui Marche 2025') {
           defaultEvent = e;
-          opt.selected = true; // Set default selection
+          opt.selected = true;
         }
       }
 
@@ -35,29 +35,26 @@ export function fetchAndDisplayEvents() {
       if (savedEventId) {
         const savedEvent = events.find(e => e.id === parseInt(savedEventId, 10));
         if (savedEvent) {
-          eventSelect.value = savedEvent.id; // Restore saved selection
+          eventSelect.value = savedEvent.id;
           displayEventDetails(savedEvent);
-          // Add null check before setting textContent
           if (selectedEventIdHint) {
-            selectedEventIdHint.textContent = savedEvent.id; // Update hint
+            selectedEventIdHint.textContent = savedEvent.id;
           }
         }
       } else if (defaultEvent) {
-        displayEventDetails(defaultEvent); // Display details of the default event
-        // Add null check before setting textContent
+        displayEventDetails(defaultEvent);
         if (selectedEventIdHint) {
-          selectedEventIdHint.textContent = defaultEvent.id; // Update hint
+          selectedEventIdHint.textContent = defaultEvent.id;
         }
       }
 
       eventSelect.addEventListener('change', () => {
         const selectedEvent = events.find(e => e.id === parseInt(eventSelect.value, 10));
         if (selectedEvent) {
-          localStorage.setItem('selectedEventId', selectedEvent.id); // Save selected event ID
+          localStorage.setItem('selectedEventId', selectedEvent.id); 
           displayEventDetails(selectedEvent);
-          // Add null check before setting textContent
           if (selectedEventIdHint) {
-            selectedEventIdHint.textContent = selectedEvent.id; // Update hint
+            selectedEventIdHint.textContent = selectedEvent.id;
           }
         }
       });
