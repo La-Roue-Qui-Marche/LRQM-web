@@ -41,7 +41,7 @@ export function setupUserSearchSection() {
       fetch(`/api/users/${user.id}/time`).then(r => r.json())
     ])
       .then(([meters, time]) => {
-        userMetersCell.textContent = `${meters.meters || 'Non disponible'} m`;
+        userMetersCell.textContent = `${meters.meters || '0'} m`;
         userTimeCell.textContent = formatTime(time.time || 0);
       })
       .catch(err => {

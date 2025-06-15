@@ -12,28 +12,44 @@ export function setupMeasureSection() {
       const bibId = measureBibInput.value.trim();
       const contributors = parseInt(contributorsInput.value, 10);
       const meters = parseInt(measureMetersInput.value, 10);
-      const selectedEventId = localStorage.getItem('selectedEventId');
-
-      if (!selectedEventId) {
-        throw new Error('Aucun événement sélectionné');
-      }
 
       // Validation first
       if (!bibId) throw new Error('Veuillez entrer un numéro de dossard');
       if (!contributors || contributors < 1 || contributors > 4) throw new Error('Le nombre de contributeurs doit être entre 1 et 4');
       if (!meters || meters < 1) throw new Error('Veuillez entrer une distance valide');
 
-      // Show confirmation dialog
-      const confirmMessage = `Confirmer l'ajout de:\n\n` +
-        `Dossard: ${bibId}\n` +
-        `Contributeurs: ${contributors}\n` +
-        `Mètres: ${meters}`;
+      // Show confirmation modal
+      const modal = new bootstrap.Modal(document.getElementById('confirmMeasureModal'));
+      document.getElementById('confirmBibId').textContent = bibId;
+      document.getElementById('confirmContributors').textContent = contributors;
+      document.getElementById('confirmMeters').textContent = meters;
 
-      if (!confirm(confirmMessage)) {
-        return;
-      }
+      // Handle confirmation
+      const confirmBtn = document.getElementById('confirmMeasureBtn');
+      
+      // Remove any existing click handler
+      confirmBtn.replaceWith(confirmBtn.cloneNode(true));
+      const newConfirmBtn = document.getElementById('confirmMeasureBtn');
+      
+      newConfirmBtn.onclick = async () => {
+        const selectedEventId = localStorage.getItem('selectedEventId');
+        if (!selectedEventId) {
+          throw new Error('Aucun événement sélectionné');
+        }
+        modal.hide();
+        await processMeasure(bibId, contributors, meters, selectedEventId);
+      };
 
-      // Find user
+      modal.show();
+
+    } catch (err) {
+      showNotification(err.message, 'error');
+    }
+  });
+
+  async function processMeasure(bibId, contributors, meters, selectedEventId) {
+    try {
+      // Use the passed selectedEventId
       const usersResponse = await fetch(`${API_BASE_URL}/api/users`);
       const users = await usersResponse.json();
       const user = users.find(u => u.bib_id === bibId && u.event_id === parseInt(selectedEventId, 10));
@@ -73,5 +89,5 @@ export function setupMeasureSection() {
     } catch (err) {
       showNotification(err.message, 'error');
     }
-  });
+  }
 }
