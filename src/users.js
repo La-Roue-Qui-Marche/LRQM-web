@@ -117,8 +117,20 @@ export function setupAddUserSection() {
       const response = await fetch(`${API_BASE_URL}/api/users`);
       const users = await response.json();
       const filteredUsers = users.filter(user => user.event_id === parseInt(selectedEventId, 10));
-      const lastBibId = filteredUsers.length > 0 ? Math.max(...filteredUsers.map(user => user.bib_id)) : 0;
-      bibIdInput.value = lastBibId + 1;
+      
+      // Sort bib_ids numerically
+      const usedBibIds = filteredUsers.map(user => parseInt(user.bib_id, 10)).sort((a, b) => a - b);
+      
+      // Find first available number
+      let nextBibId = 1;
+      for (const currentBibId of usedBibIds) {
+        if (currentBibId !== nextBibId) {
+          break;
+        }
+        nextBibId++;
+      }
+      
+      bibIdInput.value = nextBibId;
     } catch (err) {
       showNotification(`Erreur lors de la récupération des utilisateurs: ${err.message}`, 'error');
     }
