@@ -1,5 +1,4 @@
 import { showNotification } from './notifications.js';
-import { API_BASE_URL } from '../config.js';
 
 function formatTime(seconds) {
   const hours = Math.floor(seconds / 3600);
@@ -57,12 +56,12 @@ export function setupUserSearchSection() {
       return;
     }
 
-    fetch(`${API_BASE_URL}/api/users`)
+    fetch(`/api/users`)
       .then(r => r.json())
       .then(users => {
         const filteredUsers = users.filter(user => user.event_id === parseInt(selectedEventId, 10));
         let user;
-        
+
         if (searchType === 'bib') {
           const bibId = parseInt(bibInput.value, 10);
           if (!bibId) {
@@ -111,12 +110,12 @@ export function setupAddUserSection() {
     }
 
     try {
-      const response = await fetch(`${API_BASE_URL}/api/users`);
+      const response = await fetch(`/api/users`);
       const users = await response.json();
       const filteredUsers = users.filter(user => user.event_id === parseInt(selectedEventId, 10));
-      
+
       const usedBibIds = filteredUsers.map(user => parseInt(user.bib_id, 10)).sort((a, b) => a - b);
-      
+
       let nextBibId = 1;
       for (const currentBibId of usedBibIds) {
         if (currentBibId !== nextBibId) {
@@ -124,7 +123,7 @@ export function setupAddUserSection() {
         }
         nextBibId++;
       }
-      
+
       bibIdInput.value = nextBibId;
     } catch (err) {
       showNotification(`Erreur lors de la récupération des utilisateurs: ${err.message}`, 'error');
@@ -146,14 +145,14 @@ export function setupAddUserSection() {
       return;
     }
 
-    const payload = { 
-      username, 
+    const payload = {
+      username,
       bib_id: bibId.toString(),
-      event_id: eventId 
+      event_id: eventId
     };
     console.log('Sending user creation request with payload:', payload);
 
-    fetch(`${API_BASE_URL}/api/users`, {
+    fetch(`/api/users`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',

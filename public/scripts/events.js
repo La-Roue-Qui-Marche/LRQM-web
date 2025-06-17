@@ -1,5 +1,3 @@
-import { API_BASE_URL } from '../config.js';
-
 export const eventSelect = document.getElementById('eventSelect');
 export const result = document.getElementById('result');
 
@@ -13,7 +11,7 @@ const eventMeetingPointCell = document.getElementById('eventMeetingPoint');
 const selectedEventIdHint = document.getElementById('selectedEventIdHint');
 
 export function fetchAndDisplayEvents() {
-  fetch(`${API_BASE_URL}/api/events`)
+  fetch(`/api/events`)
     .then(r => r.json())
     .then(events => {
       eventSelect.innerHTML = '';
@@ -51,7 +49,7 @@ export function fetchAndDisplayEvents() {
       eventSelect.addEventListener('change', () => {
         const selectedEvent = events.find(e => e.id === parseInt(eventSelect.value, 10));
         if (selectedEvent) {
-          localStorage.setItem('selectedEventId', selectedEvent.id); 
+          localStorage.setItem('selectedEventId', selectedEvent.id);
           displayEventDetails(selectedEvent);
           if (selectedEventIdHint) {
             selectedEventIdHint.textContent = selectedEvent.id;
@@ -77,7 +75,7 @@ function displayEventDetails(event) {
 export function setupEventDetailsToggle() {
   const toggleBtn = document.getElementById('toggleEventDetails');
   const details = document.getElementById('eventDetails');
-  
+
   toggleBtn.addEventListener('click', () => {
     if (details.style.display === 'none' || !details.style.display) {
       details.style.display = 'block';
@@ -87,7 +85,7 @@ export function setupEventDetailsToggle() {
       toggleBtn.textContent = 'Plus d\'infos';
     }
   });
-  
+
   // Initially hide details
   details.style.display = 'none';
 }

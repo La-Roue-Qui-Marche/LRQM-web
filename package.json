@@ -1,0 +1,23 @@
+{
+  "name": "lrqm-web",
+  "version": "1.0.0",
+  "description": "Web App to use the main API",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/La-Roue-Qui-Marche/LRQM-web.git"
+  },
+  "author": "WFR",
+  "license": "Beerware",
+  "bugs": {
+    "url": "https://github.com/La-Roue-Qui-Marche/LRQM-web/issues"
+  },
+  "homepage": "https://github.com/La-Roue-Qui-Marche/LRQM-web#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "http-proxy-middleware": "^3.0.5"
+  }
+}
