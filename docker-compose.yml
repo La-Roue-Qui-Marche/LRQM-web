@@ -1,0 +1,11 @@
+services:
+  lrqm-web:
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./public:/usr/src/app/public:ro
+    environment:
+      - PORT=3000
+    restart: unless-stopped
+

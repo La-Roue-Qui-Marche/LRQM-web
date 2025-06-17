@@ -1,5 +1,4 @@
 import { showNotification } from './notifications.js';
-import { API_BASE_URL } from '../config.js';
 
 export function setupMeasureSection() {
   const measureBibInput = document.getElementById('measureBibInput');
@@ -26,11 +25,11 @@ export function setupMeasureSection() {
 
       // Handle confirmation
       const confirmBtn = document.getElementById('confirmMeasureBtn');
-      
+
       // Remove any existing click handler
       confirmBtn.replaceWith(confirmBtn.cloneNode(true));
       const newConfirmBtn = document.getElementById('confirmMeasureBtn');
-      
+
       newConfirmBtn.onclick = async () => {
         const selectedEventId = localStorage.getItem('selectedEventId');
         if (!selectedEventId) {
@@ -50,13 +49,13 @@ export function setupMeasureSection() {
   async function processMeasure(bibId, contributors, meters, selectedEventId) {
     try {
       // Use the passed selectedEventId
-      const usersResponse = await fetch(`${API_BASE_URL}/api/users`);
+      const usersResponse = await fetch(`/api/users`);
       const users = await usersResponse.json();
       const user = users.find(u => u.bib_id === bibId && u.event_id === parseInt(selectedEventId, 10));
       if (!user) throw new Error('Utilisateur introuvable pour ce numéro de dossard');
 
       // 1. Start measure
-      const startResponse = await fetch(`${API_BASE_URL}/api/measures/start`, {
+      const startResponse = await fetch(`/api/measures/start`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -68,7 +67,7 @@ export function setupMeasureSection() {
       const measureData = await startResponse.json();
 
       // 2. Edit meters
-      const editResponse = await fetch(`${API_BASE_URL}/api/measures/${measureData.id}`, {
+      const editResponse = await fetch(`/api/measures/${measureData.id}`, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ meters })
@@ -76,7 +75,7 @@ export function setupMeasureSection() {
       if (!editResponse.ok) throw new Error('Erreur lors de l\'ajout des mètres');
 
       // 3. Stop measure
-      const stopResponse = await fetch(`${API_BASE_URL}/api/measures/${measureData.id}/stop`, {
+      const stopResponse = await fetch(`/api/measures/${measureData.id}/stop`, {
         method: 'PUT'
       });
       if (!stopResponse.ok) throw new Error('Erreur lors de l\'arrêt de la mesure');
